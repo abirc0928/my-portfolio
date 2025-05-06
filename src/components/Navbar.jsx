@@ -1,9 +1,36 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 
 const Navbar = ({ navOpen }) => {
     const lastActiveLink = useRef()
     const activeBox = useRef()
+
+    const initActiveBox = () => {
+        activeBox.current.style.top = lastActiveLink.current.offsetTop + 'px';
+        activeBox.current.style.left = lastActiveLink.current.offsetLeft + 'px';
+        activeBox.current.style.width = lastActiveLink.current.offsetWidth + 'px';
+        activeBox.current.style.height = lastActiveLink.current.offsetHeight + 'px';
+    }
+
+    useEffect(initActiveBox, [])
+    
+
+    window.addEventListener('resize', initActiveBox);
+
+    const activeCurrentLink = (event) => {
+        lastActiveLink.current?.classList.remove('active');
+        event.target.classList.add('active');
+        lastActiveLink.current = event.target;
+
+        activeBox.current.style.top = event.target.offsetTop + 'px';
+        activeBox.current.style.left = event.target.offsetLeft + 'px';
+        activeBox.current.style.width = event.target.
+            offsetWidth + 'px';
+        activeBox.current.style.height = event.target.
+            offsetHeight + 'px';
+
+    }
+
     const navItems = [
         {
             label: 'Home',
@@ -29,13 +56,14 @@ const Navbar = ({ navOpen }) => {
         {
             label: 'Contact',
             link: '#contact',
-            className: 'nav-link md:hidden'
+            className: 'nav-link md:!hidden'
         }
     ];
+
     return (
         <nav
             className={`navbar ${navOpen ? 'active' : ''
-                } md:static md:mt-0 md:opacity-100 md:visible md:scale-100 md:blur-0 md:flex`}
+                } md:flex`}
         >
             {
                 navItems.map(({ label, link, className, ref }, key) => (
@@ -44,7 +72,7 @@ const Navbar = ({ navOpen }) => {
                         key={key}
                         ref={ref}
                         className={className}
-                        onClick={null}
+                        onClick={activeCurrentLink}
                     >
                         {label}
                     </a>
@@ -65,3 +93,40 @@ Navbar.prototype = {
 }
 
 export default Navbar
+
+// import React, { useState } from 'react';
+// import PropTypes from 'prop-types';
+
+// const Navbar = ({ navOpen }) => {
+//     const [activeLink, setActiveLink] = useState('#home');
+
+//     const navItems = [
+//         { label: 'Home', link: '#home' },
+//         { label: 'About', link: '#about' },
+//         { label: 'Work', link: '#work' },
+//         { label: 'Reviews', link: '#reviews' },
+//         { label: 'Contact', link: '#contact', className: 'md:!hidden' }
+//     ];
+
+//     return (
+//         <nav className={`navbar ${navOpen ? 'active' : ''} md:flex`}>
+//             {navItems.map(({ label, link, className = '' }) => (
+//                 <a
+//                     href={link}
+//                     key={link}
+//                     className={`nav-link ${activeLink === link ? 'active' : ''} ${className}`}
+//                     onClick={() => setActiveLink(link)}
+//                 >
+//                     {label}
+//                 </a>
+//             ))}
+           
+//         </nav>
+//     );
+// };
+
+// Navbar.propTypes = {
+//     navOpen: PropTypes.bool.isRequired
+// };
+
+// export default Navbar;
