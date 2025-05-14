@@ -52,7 +52,7 @@ const Work = () => {
                 <div className="grid gap-x-4 gap-y-5 grid-cols-[repeat(auto-fill,_minmax(280px,_1fr))]">
                     {
                         works.map(({imgSrc, title, tags, projectLink}, key)=>(
-                            <ProjectCard imgSrc={imgSrc} title={title} tags={tags} projectLink={projectLink}></ProjectCard>
+                            <ProjectCard imgSrc={imgSrc} title={title} tags={tags} projectLink={projectLink} className='reveal-up'></ProjectCard>
                         ))
                     }
                 </div>
